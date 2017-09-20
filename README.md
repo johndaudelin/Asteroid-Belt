@@ -2,7 +2,7 @@
 
 ## Description
 
-Asteroid Belt is a retro mobile version of the Atari arcade game "Asteroids" that I developed in 2012. While the code may not follow the best industry standards, I was able to create and market this fully functional Android game on Amazon and Google Play when I was 13 years old. The software I used is a high level mobile game programming language called "App Game Kit" (see "code" section below).
+Asteroid Belt is a retro mobile version of the Atari arcade game "Asteroids" that I developed in 2012. While the code may not follow the best industry standards, I was able to create and market this fully functional Android game on Amazon and Google Play when I was 13 years old. The software I used is a high level mobile game creation system called "App Game Kit" (see "code" section below).
 
 ## Download/Setup
 
