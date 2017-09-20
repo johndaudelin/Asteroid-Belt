@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="AsteroidBelt" />
+		<Option pch_mode="2" />
+		<Option compiler="agk_compiler" />
+		<Build>
+			<Target title="Debug">
+				<Option output="AsteroidBelt" prefix_auto="1" extension_auto="1" />
+				<Option object_output="" />
+				<Option type="0" />
+				<Option compiler="agk_compiler" />
+			</Target>
+			<Target title="Release">
+				<Option output="AsteroidBelt" prefix_auto="1" extension_auto="1" />
+				<Option object_output="" />
+				<Option type="0" />
+				<Option compiler="agk_compiler" />
+			</Target>
+		</Build>
+		<Unit filename="main.agc">
+			<Option link="0" />
+		</Unit>
+		<Unit filename="setup.agc">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Extensions>
+			<code_completion />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

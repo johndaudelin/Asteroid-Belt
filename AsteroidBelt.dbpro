@@ -1,0 +1,4 @@
+project name=AsteroidBelt
+main=main.agc
+app title=AsteroidBelt
+media root path=C:\Users\...\AsteroidBelt\
