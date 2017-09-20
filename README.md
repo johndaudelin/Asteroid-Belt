@@ -2,13 +2,7 @@
 
 ## Description
 
-## Demo
-
-## Setup
-
-### Creating and intializing the database
-
-### Running the web app
+## Download/Setup
 
 ## Code
 
