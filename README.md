@@ -14,7 +14,7 @@ If you would like to run a simulation of Asteroid Belt on your computer, clone t
 
 The high-level language used to program Asteroid Belt is called BASIC (or Tier 1), and is a part of the App Game Kit (AGK) game development engine. View the AGK website [here](https://www.appgamekit.com/) and the BASIC code documentation [here](https://www.appgamekit.com/documentation/home.html).
 
-Almost all of my original code is inside the file "main.agc." I make heavy use of the language's native "gosub" functionality, which is the equivalent of using a goto statement in Java or C. At the time (2012), "functions" in AGK were difficult to use or almost nonexistent. I also make use of a common structure in BASIC:
+Almost all of my original code is inside the file "main.agc." I make use of the language's native "gosub" functionality, which is the equivalent of using a goto statement in Java or C. I used this structure simply because I was unaware at the time of how powerful and useful functions can be. I also make use of a common structure in BASIC:
 
 ```
 do
@@ -25,7 +25,7 @@ loop
 
 This block of code continually loops to: update the screen graphics, check for any conditions that have been met in the game, and perform a single screen render ("sync()") to show these changes. Once an "exit" command is found (inside a conditional), the program breaks out of this loop and continues through the code.
 
-The code is sloppy in places, and if I was developing it today, I would use very different coding standards. However, it represents the successful culmination of several months of hard programming work when I was much younger.
+The code is sloppy in places, and if I was developing it today, I would use very different standards. However, it represents the successful culmination of several months of hard programming work when I was much younger.
 
 ## History
 
