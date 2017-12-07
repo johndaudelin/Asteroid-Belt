@@ -9,288 +9,287 @@ SetVirtualResolution (480,320)
 SetSyncRate (60,1)
 SetOrientationAllowed (0,0,1,1)
 
-Gosub Menu
+Menu()
 
-Menu:
+function Menu()
+	// Sprites 143-148 are old stars
+	DIM stars[6]
+	DIM StarIncrease[6]
 
-DIM StarIncrease [6]
+	Backdrop = (CreateSprite (0))
+	SetSpriteColor (Backdrop,32,32,32,0)
 
-Backdrop = (CreateSprite (LoadImage ("MenuBackDrop.png")))
-SetSpriteColorAlpha (Backdrop,0)
+	CountTime = 0
+	Shatter = 0
+
+	scale# = 1
+
+	starImage = LoadImage ("Star.png")
+
+	for i = 0 to 5
+		scale# = scale# - .1
+		stars[i] = CreateSprite (starImage)
+		SetSpriteScale (stars[i],scale#,scale#)
+		SetSpriteColor (stars[i],255,255,255,Random (10,255))
+	next i
+
+	SetSpritePosition (stars[0],240,280)
+	SetSpritePosition (stars[1],70,100)
+	SetSpritePosition (stars[2],30,230)
+	SetSpritePosition (stars[3],200,40)
+	SetSpritePosition (stars[4],350,200)
+	SetSpritePosition (stars[5],430,300)
+
+
+	LoadImage (1,"PlayButton.png")
+	LoadImage (2,"Help.png")
+	LoadImage (3,"Asteroid1.png")
+	LoadImage (4,"Asteroid2.png")
+	LoadImage (5,"Asteroid3.png")
+	LoadImage (6,"Title.png")
+	LoadImage (7,"company.png")
+	LoadImage (8,"HelpScreen2.png")
+	LoadImage (9,"SoundOff.png")
+	LoadImage (10,"SoundOn.png")
+	LoadImage (11,"Shatter1.png")
+	LoadImage (12,"Shatter2.png")
+	LoadImage (13,"Shatter3.png")
+	LoadImage (14,"Shatter4.png")
+	LoadImage (15,"MenuButton.png")
+	LoadMusic (1,"Space.mp3")
+	LoadSound (2,"rumbling 2.wav")
+	LoadSound (3,"beep 04.wav")
+	LoadImage (16,"company.png")
+	LoadImage (21,"Exit.png")
+
+	CreateSprite (1,1)
+	SetSpritePosition (1,170,100)
+	SetSpriteColorAlpha (1,0)
+
+	CreateSprite (2,2)
+	SetSpritePosition (2,170,160)
+	SetSpriteColorAlpha (2,0)
+
+	CreateSprite (3,10)
+	SetSpritePosition (3,0,280)
+	SetSpriteScale (3,.8,.8)
+	SetSpriteColorAlpha (3,0)
+
+	CreateSprite (21,21)
+	SetSpritePosition (21,170,220)
+	SetSpriteColorAlpha (21,0)
+
+	scale# = .5
+
+	for something = 4 to 9
+		CreateSprite (something,Random (3,5))
+		SetSpriteScale (something,scale#,scale#)
+
+		scale# = scale# + .1
+		Sideways = Random (1,2)
+		Upwards = Random (0,320)
+		if Sideways = 1
+			SetSpriteX (something,Random (-80,-42))
+		else
+			SetSpriteX (something,Random (480,520))
+		endif
+		SetSpriteY (something,Upwards)
+
+		SetSpriteAngle (something,Random (0,360))
+	next something
+
+	CreateSprite (10,6)
+	SetSpritePosition (10,50,0)
+	SetSpriteColorAlpha (10,0)
+
+	CreateSprite (15,8)
+	SetSpriteColorAlpha (15,0)
+
+	CreateSprite (20,15)
+	SetSpritePosition (20,190,280)
+	SetSpriteColorAlpha (20,0)
+
+	CreateSprite (16,16)
+	SetSpritePosition (16,350,275)
+
+
+
+	for g = 1 to 6
+		StarIncrease [g]= Random (0,1)
+	next g
+
+	PlayMusic (1,1)
+
+	quickwait = 0
+	while quickwait < 51
+		SetSpriteColorAlpha (1,GetSpriteColorAlpha (1)+5)
+		SetSpriteColorAlpha (2,GetSpriteColorAlpha (2)+5)
+		SetSpriteColorAlpha (3,GetSpriteColorAlpha (3)+5)
+		SetSpriteColorAlpha (10,GetSpriteColorAlpha (10)+5)
+		SetSpriteColorAlpha (21,GetSpriteColorAlpha (21)+5)
+		SetSpriteColorAlpha (Backdrop,GetSpriteColorAlpha (Backdrop)+5)
+
+		quickwait = quickwait + 1
+
+		sync ()
+	endwhile
+
+	Do
+		x = 0
+		sync ()
+
+		for h = 143 to 148
+			if StarIncrease [h - 142]=1
+				SetSpriteColorAlpha (h,GetSpriteColorAlpha (h)+1)
+				if GetSpriteColorAlpha (h)=>255
+					StarIncrease [h-142]=0
+				endif
+			endif
+			if StarIncrease [h - 142]=0
+				SetSpriteColorAlpha (h,GetSpriteColorAlpha (h)-1)
+				if GetSpriteColorAlpha (h)=<0
+					StarIncrease [h-142]=1
+				endif
+			endif
+		next h
+
+		if Shatter = 1
+			while CountTime < 90
+				for v = 11 to 14
+					x# = cos(GetSpriteAngle(v))
+					y# = sin(GetSpriteAngle(v))
+
+					SetSpritePosition(v,GetSpriteX(v)-7*x#,GetSpriteY(v)-7*y#)
+				next v
+				sync ()
+				CountTime = CountTime + 1
+			endwhile
+			exit
+		endif
+
+		If GetPointerPressed ()=1
+
+		// Pressing the Play Button
+
+		If GetSpriteExists (1)=1
+			if GetSpriteHitTest(1,GetPointerX(),GetPointerY())=1
+				CreateSprite (11,11)
+				CreateSprite (12,12)
+				CreateSprite (13,13)
+				CreateSprite (14,14)
+
+				for h = 11 to 14
+					SetSpritePosition (h,210,100)
+					SetSpriteAngle (h,angle)
+					angle = angle + 78
+				next h
+				if GetSpriteImageId (3)=10
+					PlaySound (2)
+				endif
+				DeleteSprite (1)
+				Shatter = 1
+			endif
+		endif
+
+		// Pressing the Help Button
+			if GetSpriteHitTest(2,GetPointerX(),GetPointerY())=1
+				if GetSpriteImageId (3)=10
+					playSound (3)
+				endif
+				SetSpriteColoralpha (2,0)
+				do
+					sync()
+					if GetSpriteColorAlpha (15)<255
+						SetSpriteColorAlpha (15,GetSpriteColorAlpha (15)+5)
+					endif
+					if GetPointerPressed ()=1 and GetSpriteHitTest (20,GetPointerX(),GetPointerY())
+						if GetSpriteImageId (3)=10
+							playSound (3)
+						endif
+						SetSpriteColorAlpha (2,255)
+						do
+							SetSpriteColorAlpha (15,GetSpriteColorAlpha (15)-5)
+							SetSpriteColorAlpha (20,0)
+							sync ()
+							if GetSpriteColorAlpha (15)=0
+								exit
+							endif
+						loop
+						exit
+					endif
+					if GetSpriteColorAlpha (15)=255
+						if GetSpriteColorAlpha (20)<255
+							SetSpriteColorAlpha (20,GetSpriteColorAlpha (20)+5)
+						endif
+					endif
+				loop
+			endif
+
+			if GetSpriteHitTest (21,GetPointerX(),GetPointerY())=1
+				end
+			endif
+		endif
+		If GetPointerPressed()=1 and GetSpriteHitTest(3,GetPointerX(),GetPointerY())=1
+			if GetSpriteImageID (3)=10
+				SetSpriteImage (3,9)
+				SetSpriteScale (3,.8,.8)
+				SetMusicSystemVolume (0)
+				x = 1
+			endif
+			If GetSpriteImageID (3)=9 and x = 0
+				SetSpriteImage (3,10)
+				SetSpriteScale (3,.8,.8)
+				SetMusicSystemVolume (100)
+			endif
+		endif
+		for v = 4 to 9
+			x# = cos(GetSpriteAngle(v))
+			y# = sin(GetSpriteAngle(v))
+
+			SetSpritePosition(v,GetSpriteX(v)-1*x#,GetSpriteY(v)-1*y#)
+
+			if GetSpriteX(v)>480
+				SetSpriteX(v,-40)
+			endif
+			if GetSpriteX(v)<-40
+				SetSpriteX(v,480)
+			endif
+			If GetSpriteY(v)>320
+				SetSpriteY(v,-40)
+			endif
+			If GetSpriteY(v)<-40
+				SetSpriteY(v,320)
+			endif
+		next v
+	loop
+
+	If GetSpriteImageId (3)=10
+		sound = 1
+	endif
+	if GetSpriteImageId (3)=9
+		sound = 0
+	endif
+
+	for g = 1 to 4
+		if GetSpriteExists (g)=1
+			DeleteImage (g)
+			DeleteSprite (g)
+		endif
+	next g
+
+	DeleteSprite (Backdrop)
+
+	DeleteText (1)
+
+	Gosub Replay
+endfunction
+
+//Game
+Replay:
 
 level = 1
 score = 1000
-CountTime = 0
-Shatter = 0
-
-scale# = 1
-
-LoadImage (81,"Star.png")
-
-for Stars = 143 to 148
-    scale# = scale# - .1
-    CreateSprite (Stars,81)
-    SetSpritePosition (Stars,Random (10,470),Random (10,310))
-    SetSpriteScale (Stars,scale#,scale#)
-    SetSpriteColor (Stars,255,255,255,Random (10,255))
-next Stars
-
-SetSpritePosition (143,240,280)
-SetSpritePosition (144,70,100)
-SetSpritePosition (145,30,230)
-SetSpritePosition (146,200,40)
-SetSpritePosition (147,350,200)
-SetSpritePosition (148,430,300)
-
-
-LoadImage (1,"PlayButton.png")
-LoadImage (2,"Help.png")
-LoadImage (3,"Asteroid1.png")
-LoadImage (4,"Asteroid2.png")
-LoadImage (5,"Asteroid3.png")
-LoadImage (6,"Title.png")
-LoadImage (7,"company.png")
-LoadImage (8,"HelpScreen2.png")
-LoadImage (9,"SoundOff.png")
-LoadImage (10,"SoundOn.png")
-LoadImage (11,"Shatter1.png")
-LoadImage (12,"Shatter2.png")
-LoadImage (13,"Shatter3.png")
-LoadImage (14,"Shatter4.png")
-LoadImage (15,"MenuButton.png")
-LoadMusic (1,"Space.mp3")
-LoadSound (2,"rumbling 2.wav")
-LoadSound (3,"beep 04.wav")
-LoadImage (16,"company.png")
-LoadImage (21,"Exit.png")
-
-CreateSprite (1,1)
-SetSpritePosition (1,170,100)
-SetSpriteColorAlpha (1,0)
-
-CreateSprite (2,2)
-SetSpritePosition (2,170,160)
-SetSpriteColorAlpha (2,0)
-
-CreateSprite (3,10)
-SetSpritePosition (3,0,280)
-SetSpriteScale (3,.8,.8)
-SetSpriteColorAlpha (3,0)
-
-CreateSprite (21,21)
-SetSpritePosition (21,170,220)
-SetSpriteColorAlpha (21,0)
-
-scale# = .5
-
-for something = 4 to 9
-    CreateSprite (something,Random (3,5))
-    SetSpriteScale (something,scale#,scale#)
-
-    scale# = scale# + .1
-    Sideways = Random (1,2)
-    Upwards = Random (0,320)
-    if Sideways = 1
-        SetSpriteX (something,Random (-80,-42))
-    else
-        SetSpriteX (something,Random (480,520))
-    endif
-    SetSpriteY (something,Upwards)
-
-    SetSpriteAngle (something,Random (0,360))
-next something
-
-CreateSprite (10,6)
-SetSpritePosition (10,50,0)
-SetSpriteColorAlpha (10,0)
-
-CreateSprite (15,8)
-SetSpriteColorAlpha (15,0)
-
-CreateSprite (20,15)
-SetSpritePosition (20,190,280)
-SetSpriteColorAlpha (20,0)
-
-CreateSprite (16,16)
-SetSpritePosition (16,350,275)
-
-
-
-for g = 1 to 6
-    StarIncrease [g]= Random (0,1)
-next g
-
-PlayMusic (1,1)
-
-quickwait = 0
-while quickwait < 51
-    SetSpriteColorAlpha (1,GetSpriteColorAlpha (1)+5)
-    SetSpriteColorAlpha (2,GetSpriteColorAlpha (2)+5)
-    SetSpriteColorAlpha (3,GetSpriteColorAlpha (3)+5)
-    SetSpriteColorAlpha (10,GetSpriteColorAlpha (10)+5)
-    SetSpriteColorAlpha (21,GetSpriteColorAlpha (21)+5)
-    SetSpriteColorAlpha (Backdrop,GetSpriteColorAlpha (Backdrop)+5)
-
-    quickwait = quickwait + 1
-
-    sync ()
-endwhile
-
-Do
-    x = 0
-    sync ()
-
-    for h = 143 to 148
-        if StarIncrease [h - 142]=1
-            SetSpriteColorAlpha (h,GetSpriteColorAlpha (h)+1)
-            if GetSpriteColorAlpha (h)=>255
-                StarIncrease [h-142]=0
-            endif
-        endif
-        if StarIncrease [h - 142]=0
-            SetSpriteColorAlpha (h,GetSpriteColorAlpha (h)-1)
-            if GetSpriteColorAlpha (h)=<0
-                StarIncrease [h-142]=1
-            endif
-        endif
-    next h
-
-    if Shatter = 1
-        while CountTime < 90
-            for v = 11 to 14
-                x# = cos(GetSpriteAngle(v))
-                y# = sin(GetSpriteAngle(v))
-
-                SetSpritePosition(v,GetSpriteX(v)-7*x#,GetSpriteY(v)-7*y#)
-            next v
-            sync ()
-            CountTime = CountTime + 1
-        endwhile
-        exit
-    endif
-
-    If GetPointerPressed ()=1
-
-    // Pressing the Play Button
-
-    If GetSpriteExists (1)=1
-        if GetSpriteHitTest(1,GetPointerX(),GetPointerY())=1
-            CreateSprite (11,11)
-            CreateSprite (12,12)
-            CreateSprite (13,13)
-            CreateSprite (14,14)
-
-            for h = 11 to 14
-                SetSpritePosition (h,210,100)
-                SetSpriteAngle (h,angle)
-                angle = angle + 78
-            next h
-            if GetSpriteImageId (3)=10
-                PlaySound (2)
-            endif
-            DeleteSprite (1)
-            Shatter = 1
-        endif
-    endif
-
-    // Pressing the Help Button
-        if GetSpriteHitTest(2,GetPointerX(),GetPointerY())=1
-            if GetSpriteImageId (3)=10
-                playSound (3)
-            endif
-            SetSpriteColoralpha (2,0)
-            do
-                sync()
-                if GetSpriteColorAlpha (15)<255
-                    SetSpriteColorAlpha (15,GetSpriteColorAlpha (15)+5)
-                endif
-                if GetPointerPressed ()=1 and GetSpriteHitTest (20,GetPointerX(),GetPointerY())
-                    if GetSpriteImageId (3)=10
-                        playSound (3)
-                    endif
-                    SetSpriteColorAlpha (2,255)
-                    do
-                        SetSpriteColorAlpha (15,GetSpriteColorAlpha (15)-5)
-                        SetSpriteColorAlpha (20,0)
-                        sync ()
-                        if GetSpriteColorAlpha (15)=0
-                            exit
-                        endif
-                    loop
-                    exit
-                endif
-                if GetSpriteColorAlpha (15)=255
-                    if GetSpriteColorAlpha (20)<255
-                        SetSpriteColorAlpha (20,GetSpriteColorAlpha (20)+5)
-                    endif
-                endif
-            loop
-        endif
-
-        if GetSpriteHitTest (21,GetPointerX(),GetPointerY())=1
-            end
-        endif
-    endif
-    If GetPointerPressed()=1 and GetSpriteHitTest(3,GetPointerX(),GetPointerY())=1
-        if GetSpriteImageID (3)=10
-            SetSpriteImage (3,9)
-            SetSpriteScale (3,.8,.8)
-            SetMusicSystemVolume (0)
-            x = 1
-        endif
-        If GetSpriteImageID (3)=9 and x = 0
-            SetSpriteImage (3,10)
-            SetSpriteScale (3,.8,.8)
-            SetMusicSystemVolume (100)
-        endif
-    endif
-    for v = 4 to 9
-        x# = cos(GetSpriteAngle(v))
-        y# = sin(GetSpriteAngle(v))
-
-        SetSpritePosition(v,GetSpriteX(v)-1*x#,GetSpriteY(v)-1*y#)
-
-        if GetSpriteX(v)>480
-            SetSpriteX(v,-40)
-        endif
-        if GetSpriteX(v)<-40
-            SetSpriteX(v,480)
-        endif
-        If GetSpriteY(v)>320
-            SetSpriteY(v,-40)
-        endif
-        If GetSpriteY(v)<-40
-            SetSpriteY(v,320)
-        endif
-    next v
-loop
-
-If GetSpriteImageId (3)=10
-    sound = 1
-endif
-if GetSpriteImageId (3)=9
-    sound = 0
-endif
-
-for g = 1 to 4
-    if GetSpriteExists (g)=1
-        DeleteImage (g)
-        DeleteSprite (g)
-    endif
-next g
-
-DeleteSprite (Backdrop)
-
-DeleteText (1)
-
 lives = 3
-
-//Game
-
-Gosub Replay
-
-Replay:
-
 numbertokeeptrack = 0
 B = 0
 A = 0
@@ -462,31 +461,31 @@ if Level > 7
             sync()
         loop
     endif
-    if Level mod 8 = 0
+    if Mod(Level, 8) = 0
         SetSpriteImage (backdrop1,LoadImage ("Background1.png"))
         LoadImage (73,"Level8.png")
     endif
-    if Level mod 9 = 0
+    if Mod(Level, 9) = 0
         SetSpriteImage (backdrop1,LoadImage ("Background2.png"))
         LoadImage (73,"Level9.png")
     endif
-    if Level mod 10 = 0
+    if Mod(Level, 10) = 0
         SetSpriteImage (backdrop1,LoadImage ("Background3.png"))
         LoadImage (73,"Level10.png")
     endif
-    if Level mod 11 = 0
+    if Mod(Level, 11) = 0
         SetSpriteImage (backdrop1,LoadImage ("Background4.png"))
         LoadImage (73,"Level11.png")
     endif
-    if Level mod 12 = 0
+    if Mod(Level, 12) = 0
         SetSpriteImage (backdrop1,LoadImage ("Background5.png"))
         LoadImage (73,"Level12.png")
     endif
-    if Level mod 13 = 0
+    if Mod(Level, 13) = 0
         SetSpriteImage (backdrop1,LoadImage ("Background6.png"))
         LoadImage (73,"Level13.png")
     endif
-    if Level mod 14 = 0
+    if Mod(Level, 14) = 0
         SetSpriteImage (backdrop1,LoadImage ("Background7.png"))
         LoadImage (73,"Level14.png")
     endif
@@ -494,13 +493,13 @@ endif
 
 scale# = 1
 
-for Stars = 143 to 148
+for strs = 143 to 148
     scale# = scale# - .1
-    CreateSprite (Stars,81)
-    SetSpritePosition (Stars,Random (10,470),Random (10,310))
-    SetSpriteScale (Stars,scale#,scale#)
-    SetSpriteColor (Stars,255,255,255,Random (10,255))
-next Stars
+    CreateSprite (strs,81)
+    SetSpritePosition (strs,Random (10,470),Random (10,310))
+    SetSpriteScale (strs,scale#,scale#)
+    SetSpriteColor (strs,255,255,255,Random (10,255))
+next strs
 
 SetSpritePosition (143,240,280)
 SetSpritePosition (144,70,100)
@@ -521,7 +520,7 @@ for AB = 1 to 9
     CreateSprite (AB + 230,85)
     SetSpritePosition (AB + 230,1000,1000)
     SetSpriteScale (AB + 230,.2,.2)
-next bullets
+next AB
 
 if level <8
     asteroids = level + 2
@@ -672,12 +671,12 @@ do
     if time2 = 100
         SetSpriteColorAlpha (1,255)
     endif
-    if time2 <100
+    if time2 < 100
         time2 = time2 + 1
-        if time2 mod 5 = 0 and GetSpriteColorAlpha (1)=25
+        if Mod(time2, 5) = 0 and GetSpriteColorAlpha(1) = 25
             SetSpriteColorAlpha (1,199)
         endif
-        if time2 mod 5 = 0 and GetSpriteColorAlpha (1)=200
+        if Mod(time2, 5) = 0 and GetSpriteColorAlpha (1)=200
             SetSpriteColorAlpha (1,25)
         endif
         if GetSpriteColorAlpha (1)=199
@@ -694,7 +693,7 @@ do
         SetParticlesPosition (3,-1000,-1000)
     endif
     if level <8
-        if KeepTrack Mod 800 = 0
+        if Mod(KeepTrack, 800) = 0
             Sideways = Random (1,2)
             CreateSprite (83,83)
             SetSpriteScale (83,.1,.1)
@@ -705,14 +704,12 @@ do
             if Sideways = 2
                 SetSpritePosition (83,-35,Random (1,300))
             endif
-            if sound = 1
-                playsound (9,100,1)
-            endif
+			playsound (9,100,1)
         endif
     endif
     if level > 7
         modthing = 800 - (level*50)
-        if KeepTrack Mod modthing = 0
+        if Mod(KeepTrack, modthing) = 0
             if GetSpriteExists (83)=0
                 Sideways = Random (1,2)
                 CreateSprite (83,83)
@@ -724,10 +721,8 @@ do
                 if Sideways = 2
                     SetSpritePosition (83,-35,Random (1,300))
                 endif
-                if sound = 1
-                    playsound (9,100,1)
-                endif
-            endif
+				playsound (9,100,1)
+			endif
         endif
     endif
     if score > 10000 and addlife1 = 0
@@ -748,9 +743,7 @@ do
         addlife1 = 1
         lives = lives + 1
         SetSpriteColorAlpha (92,255)
-        if sound = 1
-            PlaySound (19)
-        endif
+        PlaySound (19)
     endif
     if score > 25000 and addlife2 = 0
         if GetSpriteExists (103)=1
@@ -770,9 +763,7 @@ do
         SetSpriteColorAlpha (92,255)
         addlife2 = 1
         lives = lives + 1
-        if sound = 1
-            PlaySound (19)
-        endif
+        PlaySound (19)
     endif
     if score > 35000 and addlife3 = 0
         if GetSpriteExists (103)=1
@@ -791,9 +782,7 @@ do
         endif
         addlife3 = 1
         lives = lives + 1
-        if sound = 1
-            PlaySound (19)
-        endif
+        PlaySound (19)
         SetSpriteColorAlpha (92,255)
     endif
     if score > 50000 and addlife4 = 0
@@ -807,9 +796,7 @@ do
             SetSpriteScale (103,.5,.5)
             addlife4 = 1
             lives = lives + 1
-            if sound = 1
-                PlaySound (19)
-            endif
+            PlaySound (19)
             SetSpriteColorAlpha (92,255)
         endif
         else
@@ -818,9 +805,7 @@ do
             SetSpriteScale (103,.5,.5)
             addlife4 = 1
             lives = lives + 1
-            if sound = 1
-                PlaySound (19)
-            endif
+			PlaySound (19)
             SetSpriteColorAlpha (92,255)
         endif
     endif
@@ -835,9 +820,7 @@ do
             SetSpriteScale (103,.5,.5)
             addlife5 = 1
             lives = lives + 1
-            if sound = 1
-                PlaySound (19)
-            endif
+			PlaySound (19)
             SetSpriteColorAlpha (92,255)
         endif
         else
@@ -846,9 +829,7 @@ do
             SetSpriteScale (103,.5,.5)
             addlife5 = 1
             lives = lives + 1
-            if sound = 1
-                PlaySound (19)
-            endif
+            PlaySound (19)
             SetSpriteColorAlpha (92,255)
         endif
     endif
@@ -863,9 +844,7 @@ do
             SetSpriteScale (103,.5,.5)
             addlife6 = 1
             lives = lives + 1
-            if sound = 1
-                PlaySound (19)
-            endif
+            PlaySound (19)
             SetSpriteColorAlpha (92,255)
         endif
         else
@@ -874,9 +853,7 @@ do
             SetSpriteScale (103,.5,.5)
             addlife6 = 1
             lives = lives + 1
-            if sound = 1
-                PlaySound (19)
-            endif
+            PlaySound (19)
             SetSpriteColorAlpha (92,255)
         endif
     endif
@@ -887,20 +864,20 @@ do
     if GetSpriteImageID (100)=5
         score = score - 1
     endif
-    for Stars = 143 to 148
-        If GetSpriteColorAlpha (Stars)=255
-            StarIncrease [Stars-142]=0
+    for star = 143 to 148
+        If GetSpriteColorAlpha (star)=255
+            StarIncrease [star-142]=0
         endif
-        if GetSpriteColorAlpha (Stars)=10
-            StarIncrease [Stars-142]=1
+        if GetSpriteColorAlpha (star)=10
+            StarIncrease [star-142]=1
         endif
-        if StarIncrease [Stars - 142]=1
-            SetSpriteColorAlpha (Stars,GetSpriteColorAlpha (Stars)+1)
+        if StarIncrease [star - 142]=1
+            SetSpriteColorAlpha (star,GetSpriteColorAlpha (star)+1)
         endif
-        if StarIncrease [Stars - 142]=0
-            SetSpriteColoralpha (Stars, GetSpriteColorAlpha (Stars)-1)
+        if StarIncrease [star - 142]=0
+            SetSpriteColoralpha (star, GetSpriteColorAlpha (star)-1)
         endif
-    next Stars
+    next star
 
     ty = ty + 1
 
@@ -959,9 +936,7 @@ do
     for CoinCollecting = 2500 to coin
         if GetSpriteExists (CoinCollecting)=1
             if GetSpriteCollision (1,CoinCollecting)=1
-                if sound = 1
-                    PlaySound (4)
-                endif
+                PlaySound (4)
                 DeleteSprite (CoinCollecting)
                 text = text + 1
                 CreateText (text,"+500")
@@ -974,9 +949,7 @@ do
         if GetSpriteExists (CoinCollecting)=1
             for bullets = 201 to 209
                 if GetSpriteCollision (bullets,CoinCollecting)=1
-                    if sound = 1
-                        PlaySound (4)
-                    endif
+                    PlaySound (4)
                     text = text + 1
                     CreateText (text,"+500")
                     SetTextPosition (text,GetSpriteX(CoinCollecting),GetSpriteY(CoinCollecting))
@@ -1002,7 +975,7 @@ do
         if GetSpriteExists (83)=1
 
         Running = Running + 1
-        if Running mod 30 = 0
+        if Mod(Running, 30) = 0
             Ymotion = Random (1,3)-2
         endif
         For number = 1 to 9
@@ -1011,7 +984,7 @@ do
                 SetSpriteColorAlpha (number + 230,0)
             endif
         next number
-        if Running mod 60 = 0
+        if Mod(Running, 60) = 0
             for number = 1 to 9
                 if AlienBullet# [number,1]=0
                     AlienBullet# [number,2] = (GetSpriteX (1)- GetSpriteX (83)) + (Random (1,100)-50)
@@ -1023,11 +996,11 @@ do
             next number
         endif
         if GetSpriteImageID (83)=83
-            if Runnning Mod 3 = 0
+            if Mod(Running, 3) = 0
                 SetSpriteImage (83,84)
             endif
             else
-            if Running Mod 3 = 0
+            if Mod(Running, 3) = 0
                 SetSpriteImage (83,83)
             endif
         endif
@@ -1057,9 +1030,7 @@ do
         for Bullets =  201 to 209
             if GetSpriteColorAlpha (Bullets)>0 and GetSpriteExists (83)=1
             if GetSpriteCollision (83,Bullets)=1
-                if sound = 1
-                    PlaySound (10)
-                endif
+                PlaySound (10)
                 text = text + 1
                 CreateText (text,"+700")
                 SetTextPosition (text,GetSpriteX(83),GetSpriteY(83))
@@ -1155,9 +1126,7 @@ do
         // Turning Rocket and Shooting
 
         if GetPointerPressed()=1 and GetSpriteHitTest (100,GetPointerX(),GetPointerY())=0 and GetSpriteHitTest (102,GetPointerX(),GetPointerY())=0
-            if sound = 1
-                PlaySound (1)
-            endif
+			PlaySound (1)
 
             if GetPointerX ()>x2# or GetPointerX () < x2#
 
@@ -1266,9 +1235,7 @@ do
         for jump = 201 to 209
             If GetSpriteExists (abc)=1
             If GetSpriteCollision (jump,abc)=1 and GetSpriteColorAlpha (jump)=255
-                if sound = 1
-                    PlaySound (2)
-                endif
+                PlaySound (2)
 
                 thisx = GetSpriteX (abc)
                 thisy = GetSpriteY (abc)
@@ -1365,9 +1332,7 @@ do
             x# = GetSpriteX (1)
             y# = GetSpriteY (1)
 
-            if sound = 1
-                PlaySound (3)
-            endif
+            PlaySound (3)
 
             DeleteSprite (1)
             DeleteSprite (100)
@@ -1454,21 +1419,15 @@ do
                 endif
                 if video = 100
                     SetTextColorAlpha (1001,255)
-                    if sound = 1
-                        PlaySound (18)
-                    endif
+                    PlaySound (18)
                 endif
                 if video = 150
                     SetTextColorAlpha (1002,255)
-                    if sound = 1
-                        PlaySound (18)
-                    endif
+					PlaySound (18)
                 endif
                 if video = 170 and GetSpriteExists (2004)=1
                     SetSpriteColorAlpha (2004,255)
-                    if sound = 1
-                        PlaySound (19)
-                    endif
+					PlaySound (19)
                 endif
 
                 DeleteParticles (1)
@@ -1515,9 +1474,7 @@ do
             x# = GetSpriteX (1)
             y# = GetSpriteY (1)
 
-            if sound = 1
-                PlaySound (3)
-            endif
+			PlaySound (3)
 
             DeleteSprite (1)
 
@@ -1614,7 +1571,7 @@ do
                 if GetSpriteExists (83)=1
 
                 Running = Running + 1
-                if Running mod 30 = 0
+                if mod(Running, 30) = 0
                     Ymotion = Random (1,3)-2
                 endif
 
@@ -1626,11 +1583,11 @@ do
                 next number
 
                 if GetSpriteImageID (83)=83
-                    if Runnning Mod 3 = 0
+                    if mod(Running, 3) = 0
                         SetSpriteImage (83,84)
                     endif
                 else
-                    if Running Mod 3 = 0
+                    if mod(Running, 3) = 0
                         SetSpriteImage (83,83)
                     endif
                 endif
@@ -1700,9 +1657,7 @@ do
 
             DeleteSprite (102)
 
-            if sound = 1
-                PlaySound (6)
-            endif
+			PlaySound (6)
             do
                 v = v - 1
                 alpha = alpha + 2
@@ -1728,9 +1683,7 @@ do
                     increase = 1
                     countit = countit + 1
                     if countit <4
-                        if sound = 1
-                            PlaySound (5)
-                        endif
+						PlaySound (5)
                     endif
                 endif
                 if alpha1 <= 0
@@ -1753,9 +1706,7 @@ do
 
     if GetSpriteImageID(100)=5
         if GetPointerPressed()=1 and GetPointerX()>240 and GetPointerY()<160
-        if sound = 1
-            PlaySound (1)
-        endif
+		PlaySound (1)
         for number = 1 to 9
             if Bullet# [number,1]=0
                 Bullet# [number,2] = cos(GetSpriteAngle(1))
@@ -1809,12 +1760,10 @@ function Play_Pause ()
             SetSpriteImage (100,5)
             SetSpriteScale (100,.5,.5)
             SetSpriteColorAlpha (158,0)
-            if GetSpriteExists (83)=1 and sound = 1
+            if GetSpriteExists (83)=1
                 playsound (9,100,1)
             endif
-            if sound = 1
-                PlaySound (6)
-            endif
+			PlaySound (6)
         endif
         if GetSpriteHitTest(157,GetPointerX(),GetPointerY())=1 and GetSpriteImageID (100)=6
             end
