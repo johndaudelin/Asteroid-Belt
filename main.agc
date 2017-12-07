@@ -1,6 +1,7 @@
 // ASTEROID BELT
 // Created by John Daudelin
 // BottleApp Games 2012
+// Modified December, 2017
 
 Print ("Loading...")
 sync()
@@ -40,42 +41,30 @@ function Menu()
 	SetSpritePosition (stars[4],350,200)
 	SetSpritePosition (stars[5],430,300)
 
-
-	LoadImage (1,"PlayButton.png")
-	LoadImage (2,"Help.png")
 	LoadImage (3,"Asteroid1.png")
 	LoadImage (4,"Asteroid2.png")
 	LoadImage (5,"Asteroid3.png")
-	LoadImage (6,"Title.png")
 	LoadImage (7,"company.png")
-	LoadImage (8,"HelpScreen2.png")
+	LoadImage (10, "SoundOn.png")
 	LoadImage (9,"SoundOff.png")
-	LoadImage (10,"SoundOn.png")
-	LoadImage (11,"Shatter1.png")
-	LoadImage (12,"Shatter2.png")
-	LoadImage (13,"Shatter3.png")
-	LoadImage (14,"Shatter4.png")
-	LoadImage (15,"MenuButton.png")
 	LoadMusic (1,"Space.mp3")
 	LoadSound (2,"rumbling 2.wav")
 	LoadSound (3,"beep 04.wav")
-	LoadImage (16,"company.png")
-	LoadImage (21,"Exit.png")
 
-	CreateSprite (1,1)
+	CreateSprite (1, LoadImage ("PlayButton.png"))
 	SetSpritePosition (1,170,100)
 	SetSpriteColorAlpha (1,0)
 
-	CreateSprite (2,2)
+	CreateSprite (2, LoadImage ("Help.png"))
 	SetSpritePosition (2,170,160)
 	SetSpriteColorAlpha (2,0)
 
-	CreateSprite (3,10)
+	CreateSprite (3, 10)
 	SetSpritePosition (3,0,280)
 	SetSpriteScale (3,.8,.8)
 	SetSpriteColorAlpha (3,0)
 
-	CreateSprite (21,21)
+	CreateSprite (21, LoadImage ("Exit.png"))
 	SetSpritePosition (21,170,220)
 	SetSpriteColorAlpha (21,0)
 
@@ -98,18 +87,18 @@ function Menu()
 		SetSpriteAngle (something,Random (0,360))
 	next something
 
-	CreateSprite (10,6)
+	CreateSprite (10, LoadImage ("Title.png"))
 	SetSpritePosition (10,50,0)
 	SetSpriteColorAlpha (10,0)
 
-	CreateSprite (15,8)
+	CreateSprite (15, LoadImage ("HelpScreen2.png"))
 	SetSpriteColorAlpha (15,0)
 
-	CreateSprite (20,15)
+	CreateSprite (20, LoadImage ("MenuButton.png"))
 	SetSpritePosition (20,190,280)
 	SetSpriteColorAlpha (20,0)
 
-	CreateSprite (16,16)
+	CreateSprite (16, LoadImage ("company.png"))
 	SetSpritePosition (16,350,275)
 
 
@@ -173,19 +162,18 @@ function Menu()
 
 		If GetSpriteExists (1)=1
 			if GetSpriteHitTest(1,GetPointerX(),GetPointerY())=1
-				CreateSprite (11,11)
-				CreateSprite (12,12)
-				CreateSprite (13,13)
-				CreateSprite (14,14)
+				CreateSprite (11, LoadImage ("Shatter1.png"))
+				CreateSprite (12, LoadImage ("Shatter2.png"))
+				CreateSprite (13, LoadImage ("Shatter3.png"))
+				CreateSprite (14, LoadImage ("Shatter4.png"))
 
 				for h = 11 to 14
 					SetSpritePosition (h,210,100)
 					SetSpriteAngle (h,angle)
 					angle = angle + 78
 				next h
-				if GetSpriteImageId (3)=10
-					PlaySound (2)
-				endif
+				
+				PlaySound (2)
 				DeleteSprite (1)
 				Shatter = 1
 			endif
