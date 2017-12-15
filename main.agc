@@ -334,7 +334,7 @@ backdrop1 = CreateSprite (LoadImage ("Background1.png"))
 DIM Bullet# [9,4]
 DIM AlienBullet# [9,3]
 
-LoadImage (7,"ship1.png")
+LoadImage (7,"ship.png")
 LoadImage (2,"Asteroid1.png")
 LoadImage (3,"Asteroid2.png")
 LoadImage (4,"Bullet.png")
