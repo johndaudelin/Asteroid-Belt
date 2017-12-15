@@ -25,11 +25,9 @@ function Menu()
 
 	scale# = 1
 
-	starImage = LoadImage ("Star.png")
-
 	for i = 0 to 5
 		scale# = scale# - .1
-		stars[i] = CreateSprite (starImage)
+		stars[i] = CreateSprite (LoadImage ("Star.png"))
 		SetSpriteScale (stars[i],scale#,scale#)
 		SetSpriteColor (stars[i],255,255,255,Random (10,255))
 	next i
