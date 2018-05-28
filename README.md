@@ -2,7 +2,7 @@
 
 ## Description
 
-Asteroid Belt is a retro mobile version of the Atari arcade game "Asteroids" that I developed in 2012. I was able to create and market this fully functional Android game on Amazon and Google Play when I was 13 years old. The software I used is a high level mobile game creation system called "App Game Kit" (see "code" section below).
+Asteroid Belt (a retro mobile version of the Atari arcade game "Asteroids") is an Android app I developed in 2012. I was able to create and market this fully functional Android game on Amazon and Google Play when I was 13 years old. The software I used is a high level mobile game creation system called "App Game Kit" (see "code" section below).
 
 ## Download/Setup
 
@@ -14,7 +14,7 @@ If you would like to run a simulation of Asteroid Belt on your computer, clone t
 
 The high-level language used to program Asteroid Belt is called BASIC (or Tier 1), and is a part of the App Game Kit (AGK) game development engine. View the AGK website [here](https://www.appgamekit.com/) and the BASIC code documentation [here](https://www.appgamekit.com/documentation/home.html).
 
-Almost all of my original code is inside the file "main.agc." I make use of the language's native "gosub" functionality, which is the equivalent of using a goto statement in Java or C. I used this structure because I was unaware at the time of functional and object-oriented programming. I also make use of a common structure in BASIC:
+Almost all of my original code is inside the file "main.agc." I made use of the language's native "gosub" functionality, which is the equivalent of using a goto statement in Java or C. I also made use of a common structure in BASIC:
 
 ```
 do
